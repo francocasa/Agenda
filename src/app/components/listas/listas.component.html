@@ -1,3 +1,16 @@
-<p>
-    listas works!aaaaa
-</p>
+<ion-list>
+    <ion-item class="ion-activatable" detail *ngFor="let lista of toDoService.lists | filtroCompletado:completada" (click)="listaSeleccionada(lista)">
+        <ion-label>
+            {{lista.titulo}}
+        </ion-label>
+
+        <ion-note slot="end" color="success">
+            {{lista.items.length}} items
+        </ion-note>
+        <ion-note *ngIf="!completada" slot="end" color="danger">
+            {{lista.itemsFaltantes}} item Faltantes
+        </ion-note>
+    </ion-item>
+
+
+</ion-list>

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Lista } from 'src/app/models/list.model';
 import { ToDoService } from 'src/app/services/to-do.service';
 
 @Component({
@@ -50,30 +49,6 @@ export class Tab1Page {
     alert.present();
   }
 
-  listaSeleccionada(lista:Lista)
-  {
-    this.router.navigateByUrl(`/tabs/tab1/agregar/${lista.id}`);
-  }
 
-  async eliminarLista(i:number)
-  {
-    const alert = await this.alertController.create({
-      header: 'Alert',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
-        {
-          text: 'Eliminar',
-          handler: (data) =>{
-            this.toDoService.lists.splice(i, 1);
-            this.toDoService.guardarAlmacenamiento();
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
 
 }
