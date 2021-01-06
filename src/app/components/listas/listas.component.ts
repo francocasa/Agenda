@@ -1,10 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToDoService } from 'src/app/services/to-do.service';
 
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonList } from '@ionic/angular';
 import { Lista } from 'src/app/models/list.model';
-import { CompileTemplateMetadata } from '@angular/compiler';
 
 @Component({
   selector: 'app-listas',
@@ -13,6 +12,7 @@ import { CompileTemplateMetadata } from '@angular/compiler';
 })
 export class ListasComponent implements OnInit {
 
+  @ViewChild( IonList ) lista: IonList;
   @Input() completada:boolean;
 
   constructor(public toDoService:ToDoService, private router:Router, public alertController:AlertController) { }
@@ -36,7 +36,7 @@ export class ListasComponent implements OnInit {
   async eliminarLista(i:number)
   {
     const alert = await this.alertController.create({
-      header: 'Alert',
+      header: 'Eliminar lista',
       buttons: [
         {
           text: 'Cancelar',
@@ -52,6 +52,40 @@ export class ListasComponent implements OnInit {
       ]
     });
     alert.present();
+  }  
+  
+  async cambiarNombreLista(lista:Lista)
+  {
+    console.log(lista.titulo)
+    const alert = await this.alertController.create({
+      header: 'Cambiar nombre:' + lista.titulo,
+      inputs:[
+        {
+          name: 'titulo',
+          type: 'text',
+          placeholder: 'Nombre de la lista',
+          value: lista.titulo
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Cambiar',
+          handler: (data) =>{
+            lista.titulo = data.titulo;
+            this.toDoService.guardarAlmacenamiento();
+          }
+        }
+      ]
+    });
+    
+    this.lista.closeSlidingItems();
+    alert.present();
+    
   }
+
 
 }
